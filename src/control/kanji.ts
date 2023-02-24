@@ -1,25 +1,19 @@
 import { getRandomInt } from '../utils/funcs';
+import { ConvertHiraganaToKatakana } from './japanese';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export interface KanjiDetails {
-    strokes: number;
-    grade: number;
-    freq: number;
-    jlpt_old: number;
-    jlpt_new: number;
-    meanings: string[];
-    readings_on: string[];
-    readings_kun: string[];
-    wk_level: number;
-    wk_meanings: string[];
-    wk_readings_on: string[];
-    wk_readings_kun: string[];
-    wk_radicals: string[];
+  kanji: string;
+  grade: number;
+  jlpt: number;
+  meanings: string[];
+  readings_on: string[];
+  readings_kun: string[];
 }
 
 export interface Kanji {
-    key: string;
-    value: KanjiDetails;
+  key: string;
+  value: KanjiDetails;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -27,10 +21,12 @@ const KanjiList = require('../../resources/kanji.json');
 
 export const getJlptLevelKanji = (level: number): Kanji[] => {
     const returnKanji: Kanji[] = [];
-    Object.keys(KanjiList).forEach(kanjiChar => {
+    Object.keys(KanjiList).forEach((kanjiChar) => {
         const kanji = KanjiList[kanjiChar] as KanjiDetails;
-        if (kanji.jlpt_new !== null && kanji.jlpt_new === level) {
-            returnKanji.push({ key: kanjiChar, value: kanji });
+        if (kanji.jlpt !== null && kanji.jlpt === level || kanji.jlpt === null && 0 === level) {
+            kanji.readings_kun = kanji.readings_kun.map(kun => kun.replace('.', '〜').replace('-', '〜'));
+            kanji.readings_on = kanji.readings_on.map(on => ConvertHiraganaToKatakana(on).replace('.', '〜').replace('-', '〜'));
+            returnKanji.push({ key: kanji.kanji, value: kanji });
         }
     });
     return returnKanji;
@@ -41,15 +37,24 @@ export const JLPT4 = getJlptLevelKanji(4);
 export const JLPT3 = getJlptLevelKanji(3);
 export const JLPT2 = getJlptLevelKanji(2);
 export const JLPT1 = getJlptLevelKanji(1);
+export const JLPT0 = getJlptLevelKanji(0);
+export const FullKanjiList = JLPT5.concat(JLPT4).concat(JLPT3).concat(JLPT2).concat(JLPT1).concat(JLPT0);
 
 export const GetJlpt = (level: number): Kanji[] => {
     switch (level) {
-        case 1: return JLPT1;
-        case 2: return JLPT2;
-        case 3: return JLPT3;
-        case 4: return JLPT4;
+        case 0:
+            return JLPT0;
+        case 1:
+            return JLPT1;
+        case 2:
+            return JLPT2;
+        case 3:
+            return JLPT3;
+        case 4:
+            return JLPT4;
         case 5:
-        default: return JLPT5;
+        default:
+            return JLPT5;
     }
 };
 

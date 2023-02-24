@@ -66,7 +66,7 @@ const commonConfig = (env) => ({
         }),
     ],
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
         filename: '[name].js',

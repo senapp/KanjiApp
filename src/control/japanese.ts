@@ -84,3 +84,25 @@ export const ConvertHiraganaToKatakana = (input: string): string => {
     });
     return output;
 };
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface Word {
+    word: string;
+    meaning: string;
+    reading: string;
+    jlpt: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const RawDictionary = require('../../resources/dictionary.json');
+
+export const readDictionary = (): Word[] => {
+    const returnDicitionary: Word[] = [];
+    Object.keys(RawDictionary).forEach((index) => {
+        const word = RawDictionary[index] as Word;
+        returnDicitionary.push(word);
+    });
+    return returnDicitionary;
+};
+
+export const Dictionary = readDictionary();
