@@ -1,5 +1,5 @@
 import { getRandomInt } from '../utils/funcs';
-import { ConvertHiraganaToKatakana } from './japanese';
+import { ConvertHiraganaToKatakana, getArchived } from './japanese';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export interface KanjiDetails {
@@ -58,13 +58,26 @@ export const GetJlpt = (level: number): Kanji[] => {
     }
 };
 
+export const GetJlptCount = (level: number): number => {
+    return GetJlpt(level).length;
+};
+
+export const GetJlptCountArchive = (level: number): number => {
+    return SortArhieve(GetJlpt(level)).length;
+};
+
 export const GetRandomKanjiGroup = (kanjiLevel: Kanji[]): Kanji => {
     const kanjis = Object.keys(kanjiLevel);
     return kanjiLevel[kanjis[getRandomInt(kanjis.length)]];
 };
 
-export const GetRandomKanjiLevel = (jlptLevel: number): Kanji => {
+export const GetRandomKanjiLevel = (jlptLevel: number, archiveMode: boolean): Kanji => {
     const jlpt = GetJlpt(jlptLevel);
-    const kanjis = Object.keys(GetJlpt(jlptLevel));
+    const kanjisPre = GetJlpt(jlptLevel);
+    const kanjis = Object.keys(archiveMode ? SortArhieve(kanjisPre) : kanjisPre);
     return jlpt[kanjis[getRandomInt(kanjis.length)]];
 };
+
+export const SortArhieve = (kanji: Kanji[]): Kanji[] => {
+    return (kanji.filter(item => getArchived(item)));
+}

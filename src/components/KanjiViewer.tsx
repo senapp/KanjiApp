@@ -1,26 +1,36 @@
 /* eslint-disable no-console */
 import * as React from 'react';
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import { Button } from './Button';
-import { GetJlpt, GetRandomKanjiLevel, Kanji } from '../control/kanji';
-import { Dictionary, Word } from '../control/japanese';
+import { GetJlpt, GetJlptCount, GetJlptCountArchive, GetRandomKanjiLevel, Kanji } from '../control/kanji';
+import { Dictionary, Word, archiveWord, dearchiveWord, getArchived } from '../control/japanese';
 import css from './KanjiViewer.module.css';
+import { JapWord } from './JapWord';
+import { isMobile } from '../utils/funcs';
 
-export const KanjiViewer: React.FC = () => {
+type Props = {
+    archiveMode: boolean;
+}
+
+export const KanjiViewer: React.FC<Props> = ({ archiveMode }) => {
     const [currentLevel, setCurrentLevel] = useState(-1);
     const [currentKanji, setCurrentKanji] = useState<Kanji>();
     const [wordsVisible, setWordsVisible] = useState(false);
+    
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+    const mobileView = isMobile();
 
     const renderLevel = (level: number): JSX.Element => (
         <div>
-            <div className={css.jlptNumber}>{GetJlpt(level).length}</div>
+            <div className={css.jlptNumber}>{GetJlptCountArchive(level)}/{GetJlptCount(level)}</div>
             <Button
                 className={level !== currentLevel ? css.buttonYellow : ''}
                 disable={level === currentLevel}
                 label={`JLPT ${level}`}
                 onClick={() => {
                     setCurrentLevel(level);
-                    setCurrentKanji(GetRandomKanjiLevel(level));
+                    setCurrentKanji(GetRandomKanjiLevel(level, archiveMode));
                     setWordsVisible(false);
                 }}
             />
@@ -37,9 +47,9 @@ export const KanjiViewer: React.FC = () => {
                 }
             });
 
-            return <div>{output.sort(
+            return <>{output.sort(
                 (a, b) => b.jlpt - a.jlpt || (a.meaning + a.word).length - (b.meaning + b.word).length
-            ).map(item => `「${item.word}${item.meaning}」`)}</div>;
+            ).map(item => <JapWord mobile={mobileView} word={item.word} reading={item.reading} meaning={item.meaning}></JapWord>)}</>;
         }
 
         return <>
@@ -51,18 +61,18 @@ export const KanjiViewer: React.FC = () => {
         <>
             {currentKanji && (
                 <div className={css.kanjiBox}>
-                    <div className={css.kanjiMeaning}>
+                    <div title='Meaning' className={css.kanjiMeaning}>
                         {currentKanji.value.meanings.join(', ')}
                     </div>
                     <div className={css.kanjiContainer}>
                         <div className={css.kanjiDetailsContainer}>
-                            {currentKanji.value.readings_kun.length > 0 &&<div className={css.kanjiDetailsLeft}>
+                            {currentKanji.value.readings_kun.length > 0 &&<div title='Kun Reading' className={css.kanjiDetailsLeft}>
                                 {currentKanji.value.readings_kun.join('\n')}
                             </div>}
                         </div>
                         <div className={css.kanji}>{currentKanji.key}</div>
                         <div className={css.kanjiDetailsContainer}>
-                            {currentKanji.value.readings_on.length > 0 && <div className={css.kanjiDetailsRight}>
+                            {currentKanji.value.readings_on.length > 0 && <div title='On Reading' className={css.kanjiDetailsRight}>
                                 {currentKanji.value.readings_on.join('\n')}
                             </div>}
                         </div>
@@ -73,7 +83,7 @@ export const KanjiViewer: React.FC = () => {
                             className={`${css.buttonGreen}`}
                             label={`Next`}
                             onClick={() => {
-                                setCurrentKanji(GetRandomKanjiLevel(currentLevel));
+                                setCurrentKanji(GetRandomKanjiLevel(currentLevel, archiveMode));
                                 setWordsVisible(false);
                             }}
                         />
@@ -81,6 +91,14 @@ export const KanjiViewer: React.FC = () => {
                             className={`${css.buttonBlue}`}
                             label={wordsVisible ? 'Hide Words' : `See Words`}
                             onClick={() => setWordsVisible(!wordsVisible)}
+                        />
+                        <Button
+                            className={`${css.buttonYellow}`}
+                            label={getArchived(currentKanji) ? "Remove Archive" : "Archive"}
+                            onClick={() => {
+                                getArchived(currentKanji) ? dearchiveWord(currentKanji) : archiveWord(currentKanji);
+                                forceUpdate();
+                            }}
                         />
                     </div>
                 </div>
