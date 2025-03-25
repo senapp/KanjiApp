@@ -1,3 +1,5 @@
+import { Kanji } from "./kanji";
+
 const ConvertationTable = [
     { hiragana: 'あ', katakana: 'ア' },
     { hiragana: 'い', katakana: 'イ' },
@@ -103,6 +105,18 @@ export const readDictionary = (): Word[] => {
         returnDicitionary.push(word);
     });
     return returnDicitionary;
+};
+
+export const archiveWord = (kanji: Kanji): void => {
+    localStorage.setItem(kanji.key, "1");
+};
+
+export const dearchiveWord = (kanji: Kanji): void => {
+    localStorage.setItem(kanji.key, "0");
+};
+
+export const getArchived = (kanji: Kanji): boolean => {
+    return localStorage.getItem(kanji.key) === "1" ? true : false;
 };
 
 export const Dictionary = readDictionary();

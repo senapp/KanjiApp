@@ -13,8 +13,10 @@ export const Button: React.FC<Props> = ({ onClick, label, className = '', disabl
     const [clicked, setClicked] = useState(false);
 
     const onButtonClicked = (): void => {
-        setClicked(!clicked);
-        onClick();
+        if (!disable) {
+            setClicked(!clicked);
+            onClick();
+        }
     };
 
     return (

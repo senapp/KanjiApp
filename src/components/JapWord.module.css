@@ -1,0 +1,41 @@
+.word-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: aliceblue;
+    border-radius: 15px / 15px;
+    border: solid 2px;
+    padding: 10px 20px;
+    height: 105px;
+    overflow: auto;
+    max-width: 500px;
+    text-align: center;
+}
+
+.word-container-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: aliceblue;
+    border-radius: 15px / 15px;
+    border: solid 2px;
+    padding: 10px 20px;
+    overflow: auto;
+    max-width: 500px;
+    text-align: center;
+}
+
+.word {
+    font-size: 2.5vh;
+    font-weight: bold;
+}
+
+.meaning {
+    font-size: 1.7vh;
+    margin-top: -0.3vh;
+}
+
+.reading {
+    font-size: 1.7vh;
+    margin-bottom: -0.2vh;
+}
