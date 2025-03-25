@@ -164,4 +164,6 @@
     scale: 0.9;
     align-items: center;
     white-space: nowrap;
+    flex-wrap: wrap;
+    place-content: center;
 }

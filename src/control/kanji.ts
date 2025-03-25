@@ -63,7 +63,7 @@ export const GetJlptCount = (level: number): number => {
 };
 
 export const GetJlptCountArchive = (level: number): number => {
-    return SortArhieve(GetJlpt(level)).length;
+    return SortArhieve(GetJlpt(level), false).length;
 };
 
 export const GetRandomKanjiGroup = (kanjiLevel: Kanji[]): Kanji => {
@@ -73,11 +73,11 @@ export const GetRandomKanjiGroup = (kanjiLevel: Kanji[]): Kanji => {
 
 export const GetRandomKanjiLevel = (jlptLevel: number, archiveMode: boolean): Kanji => {
     const jlpt = GetJlpt(jlptLevel);
-    const kanjisPre = GetJlpt(jlptLevel);
-    const kanjis = Object.keys(archiveMode ? SortArhieve(kanjisPre) : kanjisPre);
-    return jlpt[kanjis[getRandomInt(kanjis.length)]];
+    const kanjis = archiveMode ? SortArhieve(jlpt, false) : SortArhieve(jlpt, true);
+
+    return kanjis[getRandomInt(kanjis.length)];
 };
 
-export const SortArhieve = (kanji: Kanji[]): Kanji[] => {
-    return (kanji.filter(item => getArchived(item)));
+export const SortArhieve = (kanji: Kanji[], exclude: boolean): Kanji[] => {
+    return (kanji.filter((item) => getArchived(item) !== exclude));
 }
