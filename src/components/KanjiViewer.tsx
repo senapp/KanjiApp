@@ -65,13 +65,13 @@ export const KanjiViewer: React.FC<Props> = ({ archiveMode }) => {
                         {currentKanji.value.meanings.join(', ')}
                     </div>
                     <div className={css.kanjiContainer}>
-                        <div className={css.kanjiDetailsContainer}>
+                        <div className={css.kanjiDetailsContainerLeft}>
                             {currentKanji.value.readings_kun.length > 0 &&<div title='Kun Reading' className={css.kanjiDetailsLeft}>
                                 {currentKanji.value.readings_kun.join('\n')}
                             </div>}
                         </div>
                         <div className={css.kanji}>{currentKanji.key}</div>
-                        <div className={css.kanjiDetailsContainer}>
+                        <div className={css.kanjiDetailsContainerRight}>
                             {currentKanji.value.readings_on.length > 0 && <div title='On Reading' className={css.kanjiDetailsRight}>
                                 {currentKanji.value.readings_on.join('\n')}
                             </div>}
