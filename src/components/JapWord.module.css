@@ -10,6 +10,8 @@
     overflow: auto;
     max-width: 500px;
     text-align: center;
+    place-content: center;
+    position: relative;
 }
 
 .word-container-mobile {
@@ -23,6 +25,8 @@
     overflow: auto;
     max-width: 500px;
     text-align: center;
+    place-content: center;
+    position: relative;
 }
 
 .word {
@@ -38,4 +42,12 @@
 .reading {
     font-size: 1.7vh;
     margin-bottom: -0.2vh;
+}
+
+.level {
+    font-size: 0.8vh;
+    margin-top: 0.3vh;
+    position: absolute;
+    top: 0;
+    right: 0.8vh;
 }

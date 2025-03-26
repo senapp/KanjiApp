@@ -164,10 +164,14 @@
 
 .kanji-words {
     overflow: auto;
-    max-width: 90vw;
-    margin: 10px;
-    display: ruby;
-    max-height: 21vh;
+    max-width: 100%;
+    display: flex;
+    flex-flow: wrap;
+    position: absolute;
+    z-index: 100;
+    background-color: white;
+    padding: 10px;
+    top: 0;
 }
 
 .button-bar {
@@ -180,4 +184,21 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 10px;
+}
+
+.button-close-words {
+    background-color: blue !important;
+    box-shadow: 0 5px 0 navy !important;
+    z-index: 102;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.button-close-words:active {
+    box-shadow: 0 0 0 navy !important;
+}
+
+.button-close-words:hover {
+    background-color: blue !important;
 }

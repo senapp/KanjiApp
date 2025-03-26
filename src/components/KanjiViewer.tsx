@@ -49,7 +49,7 @@ export const KanjiViewer: React.FC<Props> = ({ archiveMode }) => {
 
             return <>{output.sort(
                 (a, b) => b.jlpt - a.jlpt || (a.meaning + a.word).length - (b.meaning + b.word).length
-            ).map(item => <JapWord mobile={mobileView} word={item.word} reading={item.reading} meaning={item.meaning}></JapWord>)}</>;
+            ).map(item => <JapWord mobile={mobileView} word={item.word} reading={item.reading} meaning={item.meaning} level={item.jlpt}></JapWord>)}</>;
         }
 
         return <>
@@ -77,7 +77,13 @@ export const KanjiViewer: React.FC<Props> = ({ archiveMode }) => {
                             </div>}
                         </div>
                     </div>
-                    { wordsVisible && <div className={css.kanjiWords}>{createKanjiWordView()}</div>}
+                    { wordsVisible && <div className={css.kanjiWords}>
+                        {createKanjiWordView()}
+                        <Button
+                            className={`${css.buttonCloseWords}`}
+                            label={wordsVisible ? 'Hide Words' : `See Words`}
+                            onClick={() => setWordsVisible(!wordsVisible)}
+                        /></div>}
                     <div className={css.buttonBar}>
                         <Button
                             className={`${css.buttonGreen}`}
