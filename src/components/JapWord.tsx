@@ -14,6 +14,6 @@ export const JapWord: React.FC<Props> = ({word, reading, meaning, mobile, level}
         <div className={css.reading}>{reading}</div>
         <div className={css.word}>{word}</div>
         <div className={css.meaning}>{meaning}</div>
-        <div className={css.level}>{"JLPT: " + level}</div>
+        <div className={css.level}>{"JLPT N" + level}</div>
     </div>
 );

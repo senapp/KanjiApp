@@ -27,7 +27,7 @@ export const KanjiViewer: React.FC<Props> = ({ archiveMode }) => {
             <Button
                 className={level !== currentLevel ? css.buttonYellow : ''}
                 disable={level === currentLevel}
-                label={`JLPT ${level}`}
+                label={`JLPT N${level}`}
                 onClick={() => {
                     setCurrentLevel(level);
                     setCurrentKanji(GetRandomKanjiLevel(level, archiveMode));
